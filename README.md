@@ -17,7 +17,7 @@ Simplicity is the biggest advantage of the MyBatis data mapper over object relat
 
 Essentials
 ----------
-aaa
+
 * [See the docs](http://mybatis.github.io/mybatis-3)
 * [Download Latest](https://github.com/mybatis/mybatis-3/releases)
 * [Download Snapshot](https://oss.sonatype.org/content/repositories/snapshots/org/mybatis/mybatis/)
