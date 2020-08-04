@@ -51,6 +51,8 @@ class AutoConstructorTest {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       final AutoConstructorMapper mapper = sqlSession.getMapper(AutoConstructorMapper.class);
       final Object subject = mapper.getSubject(1);
+      PrimitiveSubject subject2 = mapper.getSubject(1);
+      System.out.println(subject2);
       assertNotNull(subject);
     }
   }
@@ -91,4 +93,5 @@ class AutoConstructorTest {
     assertNotNull(subjects);
     Assertions.assertThat(subjects.size()).isEqualTo(3);
   }
+
 }
