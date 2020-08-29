@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.ibatis.BaseDataTest;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -92,6 +93,70 @@ class AutoConstructorTest {
   private void verifySubjects(final List<?> subjects) {
     assertNotNull(subjects);
     Assertions.assertThat(subjects.size()).isEqualTo(3);
+  }
+
+  /**
+   * 一级缓存命中场景
+   * 如果返回true，命中一级缓存
+   * 命中条件：1.sql、参数必须相同 2.statementID必须一样 3.sqlSession必须一样  4.RowBounds必须相同
+   * 返回true
+   */
+  @Test
+  public void testFirstCache1(){
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      final AutoConstructorMapper mapper = sqlSession.getMapper(AutoConstructorMapper.class);
+      PrimitiveSubject subject=mapper.getSubject(1);
+      PrimitiveSubject subject1=mapper.getSubject(1);
+      System.out.println(subject==subject1);
+    }
+  }
+
+  /**
+   * 一级缓存命中场景
+   * 如果返回true，命中一级缓存
+   * 命中条件：1.sql、参数必须相同 2.statementID必须一样 3.sqlSession必须一样  4.RowBounds必须相同
+   * 否则返回false
+   */
+  @Test
+  public void testFirstCache2(){
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      final AutoConstructorMapper mapper = sqlSession.getMapper(AutoConstructorMapper.class);
+      PrimitiveSubject subject=mapper.getSubject(1);
+      PrimitiveSubject subject1=mapper.getSubject2(1);
+      System.out.println(subject==subject1);
+    }
+  }
+
+  /**
+   * 一级缓存命中场景
+   * 如果返回true，命中一级缓存
+   * 命中条件：1.sql、参数必须相同 2.statementID必须一样 3.sqlSession必须一样 4.RowBounds必须相同
+   * 否则返回false
+   */
+  @Test
+  public void testFirstCache3(){
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      final AutoConstructorMapper mapper = sqlSession.getMapper(AutoConstructorMapper.class);
+      PrimitiveSubject subject=mapper.getSubject(1);
+      PrimitiveSubject subject1=sqlSessionFactory.openSession().getMapper(AutoConstructorMapper.class).getSubject(1);
+      System.out.println(subject==subject1);
+    }
+  }
+  /**
+   * 一级缓存命中场景
+   * 如果返回true，命中一级缓存
+   * 命中条件：1.sql、参数必须相同 2.statementID必须一样 3.sqlSession必须一样 4.RowBounds必须相同
+   * 否则返回false
+   */
+  @Test
+  public void testFirstCache4(){
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      final AutoConstructorMapper mapper = sqlSession.getMapper(AutoConstructorMapper.class);
+      RowBounds rowBounds =  RowBounds(0,10);
+      PrimitiveSubject subject=mapper.getSubject(10);
+      PrimitiveSubject subject1= (PrimitiveSubject) sqlSession.selectList("org.apache.ibatis.autoconstructor.AutoConstructorMapper.getSubject",10,rowBounds);;
+      System.out.println(subject==subject1);
+    }
   }
 
 }
