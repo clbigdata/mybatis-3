@@ -23,6 +23,9 @@ public interface AutoConstructorMapper {
   @Select("SELECT * FROM subject WHERE id = #{id}")
   PrimitiveSubject getSubject(final int id);
 
+
+  @Select("SELECT * FROM subject WHERE id = #{id}")
+  PrimitiveSubject getSubject2(final int id);
   @Select("SELECT * FROM subject")
   List<PrimitiveSubject> getSubjects();
 

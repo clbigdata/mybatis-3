@@ -152,7 +152,7 @@ class AutoConstructorTest {
   public void testFirstCache4(){
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       final AutoConstructorMapper mapper = sqlSession.getMapper(AutoConstructorMapper.class);
-      RowBounds rowBounds =  RowBounds(0,10);
+      RowBounds rowBounds =  new RowBounds(0,10);
       PrimitiveSubject subject=mapper.getSubject(10);
       PrimitiveSubject subject1= (PrimitiveSubject) sqlSession.selectList("org.apache.ibatis.autoconstructor.AutoConstructorMapper.getSubject",10,rowBounds);;
       System.out.println(subject==subject1);
